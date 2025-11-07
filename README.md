@@ -4,11 +4,12 @@ A collection of bioinformatics command-line utilities for common genomics tasks.
 
 ## Overview
 
-This package provides three standalone command-line tools that can be installed via conda or pip:
+This package provides four standalone command-line tools that can be installed via conda or pip:
 
 - **`gff2bed`** - Convert GFF files to BED format with progress tracking
 - **`file-checksum`** - Calculate file hashes for data integrity verification  
 - **`fasta-stats`** - Analyze FASTA files for sequence length and GC content statistics
+- **`quick_qc`** - Generate interactive HTML QC reports for FASTA/FASTQ files
 
 Each tool is designed to be independent and can handle large files efficiently with progress indicators.
 
@@ -37,6 +38,7 @@ pip install git+https://github.com/jiehua1995/Genomics_custom_scripts.git
 - **pandas** (≥1.3.0) - for GFF/BED file processing
 - **biopython** (≥1.78) - for FASTA file parsing  
 - **tqdm** (≥4.60.0) - for progress bars
+ - **plotly** (≥5.0.0) - for interactive HTML reports
 
 ## Tools
 
@@ -147,59 +149,56 @@ fasta-stats sequences.fasta -T -o detailed_stats.tsv
 - N10, N20, N30, N50, N70, N80, N90 values
 - Top 10 longest sequences
 
-## Dependencies
+### quick_qc
+Generate a self-contained interactive HTML QC report for FASTA/FASTQ files (single file or a directory).
 
-- **Python 3.8+**
-- **pandas** (≥1.3.0) - for GFF/BED file processing
-- **biopython** (≥1.78) - for FASTA file parsing  
-- **tqdm** (≥4.60.0) - for progress bars (optional but recommended)
-
-## Examples
-
-### Complete workflow example
+**Usage:**
 ```bash
-# 1. Calculate checksums for raw data integrity
-file-checksum -p ./raw_data -o data_checksums.txt
+# Single file
+quick_qc reads.fastq -o reads_QC_report.html
 
-# 2. Analyze FASTA file quality
-fasta-stats genome.fasta -summarize -o genome_stats.txt
+# Directory containing multiple FASTA/FASTQ files
+quick_qc ./datasets/ -o all_samples_QC_report.html
 
-# 3. Convert annotation from GFF to BED
-gff2bed -i annotations.gff -o annotations.bed
+# Specify sequence type for auto-detection ambiguity
+quick_qc sequences.fasta --type protein -o protein_QC_report.html
 ```
 
-## Development
+**Parameters:**
+- `input` (REQUIRED): Input FASTA/FASTQ file or directory containing such files
+- `--type` (OPTIONAL): Force sequence type detection (`dna`, `rna`, or `protein`)
+- `-o, --output` (OPTIONAL): Output HTML report file path (default: `{input}_QC_report.html`)
+- `-t, --threads` (OPTIONAL): Number of parallel threads for processing (default: 4)
 
-### Running tests
-```bash
-pip install -e ".[dev]"
-pytest tests/
-```
+**Features:**
+- Auto-detects file format (FASTA/FASTQ) and sequence type (DNA/RNA/protein)
+- Handles gzip-compressed files automatically
+- Multi-threaded file processing for large datasets
+- Generates self-contained HTML reports (no internet required to view)
+- Interactive plots with Plotly.js embedded inline
 
-### Code formatting
+**Output includes:**
+- **Sequence length distributions** with N50/N90 statistics
+- **GC content distributions** for DNA/RNA sequences
+- **Amino acid composition** for protein sequences
+- **Quality score distributions** for FASTQ files (per-base and per-read quality)
+- **Multi-file support** with color-coded traces for easy comparison
+
+**Examples:**
 ```bash
-black jiehua_custom/
-flake8 jiehua_custom/
+# QC single FASTQ file
+quick_qc sample1.fastq.gz
+
+# QC all files in a directory
+quick_qc ./raw_reads/ -o all_samples_QC.html
+
+# Force protein sequence analysis
+quick_qc proteins.fasta --type protein
+
+# Use more threads for large datasets
+quick_qc big_dataset/ -t 8 -o dataset_QC.html
 ```
 
 ## License
 
 Apache License 2.0 - see LICENSE file for details.
-
-## Author
-
-**Jie Hua**  
-Email: Jie.Hua@lmu.de  
-GitHub: [@jiehua1995](https://github.com/jiehua1995)
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Changelog
-
-### v1.0.0
-- Initial release with three core tools
-- gff2bed: GFF to BED conversion with progress tracking
-- file-checksum: Directory hash calculation with multiple algorithms
-- fasta-stats: Comprehensive FASTA sequence analysis

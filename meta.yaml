@@ -19,6 +19,7 @@ build:
     - gff2bed = jiehua_custom.gff2bed:main
     - file-checksum = jiehua_custom.file_checksum:main
     - fasta-stats = jiehua_custom.fasta_stats:main
+    - quick_qc = jiehua_custom.quick_qc:main
   # Enable noarch for pure Python packages (works on all platforms)
   noarch: python
 
@@ -41,6 +42,7 @@ requirements:
     - pandas >=1.3.0
     - biopython >=1.78
     - tqdm >=4.60.0
+    - plotly >=5.0.0
 
 test:
   # Test that imports work
@@ -49,12 +51,14 @@ test:
     - jiehua_custom.gff2bed
     - jiehua_custom.file_checksum
     - jiehua_custom.fasta_stats
+    - jiehua_custom.quick_qc
 
   # Test that command-line tools are available
   commands:
     - gff2bed --help
     - file-checksum --help
     - fasta-stats --help
+    - quick_qc --help
 
 about:
   home: https://github.com/jiehua1995/Genomics_custom_scripts
@@ -63,9 +67,10 @@ about:
   license_file: LICENSE
   summary: 'A collection of bioinformatics command-line utilities'
   description: |
-    jiehua_custom provides three standalone command-line tools for common 
+    jiehua_custom provides four standalone command-line tools for common 
     bioinformatics tasks: GFF to BED conversion (gff2bed), file hash 
-    calculation (file-checksum), and FASTA sequence analysis (fasta-stats).
+    calculation (file-checksum), FASTA sequence analysis (fasta-stats),
+    and quality control visualization (quick_qc) for FASTA/FASTQ files.
     Each tool is optimized for handling large files with progress tracking.
   doc_url: https://github.com/jiehua1995/Genomics_custom_scripts
   dev_url: https://github.com/jiehua1995/Genomics_custom_scripts

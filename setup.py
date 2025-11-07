@@ -51,6 +51,7 @@ setup(
         "pandas>=1.3.0",      # Required for gff2bed (GFF/BED file processing)
         "biopython>=1.78",    # Required for fasta_stats (FASTA file parsing)
         "tqdm>=4.60.0",       # Optional but recommended for progress bars
+        "plotly>=5.0.0",      # Required for interactive HTML reports
     ],
     
     # Optional dependencies that enhance functionality
@@ -77,6 +78,8 @@ setup(
             
             # fasta-stats command - analyzes FASTA files for sequence statistics
             "fasta-stats=jiehua_custom.fasta_stats:main",
+            # quick_qc command - generate interactive QC HTML report
+            "quick_qc=jiehua_custom.quick_qc:main",
         ],
     },
     
