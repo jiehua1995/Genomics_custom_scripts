@@ -1,0 +1,13 @@
+# Requirements file for jiehua_custom package
+# Install these dependencies with: pip install -r requirements.txt
+
+# Core dependencies for all tools
+pandas>=1.3.0
+biopython>=1.78
+tqdm>=4.60.0
+
+# Development dependencies (optional)
+# Uncomment the following lines for development setup:
+# pytest>=6.0
+# black
+# flake8

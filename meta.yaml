@@ -1,0 +1,75 @@
+# Conda package metadata for jiehua_custom
+# This file defines how to build the conda package
+
+package:
+  name: jiehua_custom
+  version: "1.0.0"
+
+source:
+  # For local development, use current directory
+  path: .
+
+build:
+  # Build number (increment for new builds with same version)
+  number: 0
+  # Support Python 3.8 and above
+  skip: true  # [py<38]
+  # Create console script entry points from setup.py
+  entry_points:
+    - gff2bed = jiehua_custom.gff2bed:main
+    - file-checksum = jiehua_custom.file_checksum:main
+    - fasta-stats = jiehua_custom.fasta_stats:main
+  # Enable noarch for pure Python packages (works on all platforms)
+  noarch: python
+
+requirements:
+  # Build requirements (needed during package build)
+  build:
+    - python >=3.8
+    - setuptools
+    - pip
+
+  # Host requirements (needed in the build environment)
+  host:
+    - python >=3.8
+    - setuptools
+    - pip
+
+  # Runtime requirements (installed when package is installed)
+  run:
+    - python >=3.8
+    - pandas >=1.3.0
+    - biopython >=1.78
+    - tqdm >=4.60.0
+
+test:
+  # Test that imports work
+  imports:
+    - jiehua_custom
+    - jiehua_custom.gff2bed
+    - jiehua_custom.file_checksum
+    - jiehua_custom.fasta_stats
+
+  # Test that command-line tools are available
+  commands:
+    - gff2bed --help
+    - file-checksum --help
+    - fasta-stats --help
+
+about:
+  home: https://github.com/jiehua1995/Genomics_custom_scripts
+  license: Apache-2.0
+  license_family: Apache
+  license_file: LICENSE
+  summary: 'A collection of bioinformatics command-line utilities'
+  description: |
+    jiehua_custom provides three standalone command-line tools for common 
+    bioinformatics tasks: GFF to BED conversion (gff2bed), file hash 
+    calculation (file-checksum), and FASTA sequence analysis (fasta-stats).
+    Each tool is optimized for handling large files with progress tracking.
+  doc_url: https://github.com/jiehua1995/Genomics_custom_scripts
+  dev_url: https://github.com/jiehua1995/Genomics_custom_scripts
+
+extra:
+  recipe-maintainers:
+    - jiehua1995
